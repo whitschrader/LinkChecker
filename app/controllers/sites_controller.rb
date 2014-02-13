@@ -26,7 +26,7 @@ class SitesController < ApplicationController
   def linkfarm
   end
 
-  rescue_from ActionController::ParameterMissing do |err|
+  rescue_from ActionController::ParameterMissing, :only => :create do |err|
     respond_to do |f|
       f.html do 
         redirect_to new_site_path
@@ -34,4 +34,15 @@ class SitesController < ApplicationController
       f.json {render :json  => {:error => err.message}, :status => 422}
     end
   end
+
+  # rescue_from ActionController::ParameterMissing, :handle_create_param_missing :only => :create
+  #
+  # def handle_create_param_missing
+  #    respond_to do |f|
+  #     f.html do 
+  #       redirect_to new_site_path
+  #     end
+  #     f.json {render :json  => {:error => err.message}, :status => 422}
+  #   end
+  # #
 end
