@@ -7,7 +7,10 @@ class SitesController < ApplicationController
     url = params.require(:site)[:url]
     site = Site.create(url: url)
     LinksWorker.perform_async(site.id)
-    redirect_to site_path(site)
+    respond_to do |f|
+      f.html { redirect_to site_path(site) }
+      f.json { render :json => site }
+    end
   end
 
   def show
