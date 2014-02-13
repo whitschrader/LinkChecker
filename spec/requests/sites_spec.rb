@@ -19,9 +19,9 @@ describe "Sites" do
 
 		# this simulates:
 		# result = Typhoeus.post("SERVER/sites.json", params: {"site" => {"url" => "example.com"}})
-		it 'adds and redirects after a format json post' do
+		it 'adds after a format json post' do
 			post '/sites.json', data
-			response.should be_success
+			response.status.should == 200
 			site = Site.where(:url => data[:site][:url]).first
 			site.should_not be_nil
 			JSON.parse(response.body)["id"].should == site.id
@@ -31,7 +31,7 @@ describe "Sites" do
 			post '/sites.json', {:stuff => "wrong"}.to_json, {"CONTENT_TYPE" => "application/json"}
 			response.code.should == "422"
 			result = JSON.parse(response.body)
-			puts result.inspect
+			result["error"].should == "param not found: site"
 		end
 	end
 
