@@ -11,12 +11,27 @@ describe "Sites" do
 			response.should redirect_to site
 		end
 
+		it 'redirects when getting wrong parameters with HTML' do
+			post '/sites', {:wrong => "stuff"}
+			response.should_not be_success
+			response.should redirect_to new_site_path
+		end
+
+		# this simulates:
+		# result = Typhoeus.post("SERVER/sites.json", params: {"site" => {"url" => "example.com"}})
 		it 'adds and redirects after a format json post' do
 			post '/sites.json', data
 			response.should be_success
 			site = Site.where(:url => data[:site][:url]).first
 			site.should_not be_nil
 			JSON.parse(response.body)["id"].should == site.id
+		end
+
+		it 'is a 422 with wrong parameters' do
+			post '/sites.json', {:stuff => "wrong"}.to_json, {"CONTENT_TYPE" => "application/json"}
+			response.code.should == "422"
+			result = JSON.parse(response.body)
+			puts result.inspect
 		end
 	end
 
@@ -34,7 +49,34 @@ describe "Sites" do
 			response.should be_success
 			JSON.parse(response.body).should include "url" => @site.url
 		end
+		it 'includes the links for a json GET' do
+			@site.links.create!(:url => "linked-to.com", :http_response => 200 )
+			get "/sites/#{@site.id}.json"
+			response.should be_success
+			result = JSON.parse(response.body)
+			result["links"].should_not == nil
+			result["links"].first.should include({"url" => "linked-to.com", "http_response" => 200})
+		end
+
 	end
 
-	
+	describe "GET /sites/:id/edit" do
+		it 'is successful with HTML'
+		it 'is a 404 with JSON'
+	end
+
+	describe "GET /sites/new" do
+		it 'is successful with HTML'
+		it 'is a 404 with JSON'
+	end
+
+	describe "GET /linkfarm/" do
+		it 'gets the links with HTML'
+		it 'gets the links with JSON'
+	end
+
+	describe "DELETE /sites/:id" do
+		it 'succeeds and redirects with HTML'
+		it 'succeeds and does not redirect with JSON'
+	end
 end

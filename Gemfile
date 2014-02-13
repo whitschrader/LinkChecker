@@ -47,8 +47,8 @@ group :doc do
 end
 
 group :development, :test do
-gem 'pry'
-gem 'rspec-rails'
+	gem 'pry'
+	gem 'rspec-rails'
 end
 
 # Use ActiveModel has_secure_password
