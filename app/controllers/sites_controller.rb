@@ -50,6 +50,24 @@ class SitesController < ApplicationController
     #end
   end
 
+  def destroy
+
+    site = Site.find(params[:id])
+      if site.destroy
+
+        respond_to do |f|
+            f.html { redirect_to new_site_path }
+            f.json { render :json => {:error => "Destroyed and not redirected"}, :status => 204}
+          end
+        end
+
+
+
+
+  end
+
+
+
 
   # rescue_from ActionController::ParameterMissing, :handle_create_param_missing :only => :create
   #

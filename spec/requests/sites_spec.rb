@@ -85,7 +85,21 @@ describe "Sites" do
 	end
 
 	describe "DELETE /sites/:id" do
-		it 'succeeds and redirects with HTML'
-		it 'succeeds and does not redirect with JSON'
+		before do
+			@site = Site.create(:url => "no-links-here.com")
+		end
+
+		it 'succeeds and redirects with HTML'do
+			delete "/sites/#{@site.id}"
+			response.code.should == "302"
+		#find by id, returns couldn't find ActiveRecord
+		#redirect to the linkfarm 
+	end
+
+		it 'succeeds and does not redirect with JSON' do
+			delete "/sites/#{@site.id}.json"
+
+			response.code.should == "204"
+	end
 	end
 end
