@@ -20,6 +20,22 @@ gem 'dotenv-rails', :groups => [:development, :test]
 
 gem 'rails_12factor', group: :production
 
+# Debugging gems
+
+gem 'awesome_print', group: :development 
+
+gem 'pry-rails', group: :development
+
+gem 'pry-byebug', group: :development
+
+gem 'quiet_assets', group: :development
+
+gem 'better_errors', group: :development
+
+gem 'binding_of_caller', group: :development
+
+gem 'meta_request', group: :development
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 

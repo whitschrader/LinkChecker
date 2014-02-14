@@ -1,6 +1,12 @@
 class SitesController < ApplicationController
   def new
     @site = Site.new
+
+    respond_to do |f|
+      f.html
+      f.json { render :json => {:error => "New path for site not found. Try create."}, :status => :not_found }
+    end
+
   end
 
   def create
@@ -19,7 +25,7 @@ class SitesController < ApplicationController
     @links = @site.links
     respond_to do |f|
       f.html
-      f.json { render :json => @site }
+      f.json { render :json => @site.as_json(include: :links) }
     end
   end
 
@@ -34,6 +40,16 @@ class SitesController < ApplicationController
       f.json {render :json  => {:error => err.message}, :status => 422}
     end
   end
+
+  def edit
+    @site = Site.find(params[:id])
+
+    # respond_to do |f|
+    #   f.html
+      #f.json {render :json => @site.as_json(include: :)}
+    #end
+  end
+
 
   # rescue_from ActionController::ParameterMissing, :handle_create_param_missing :only => :create
   #

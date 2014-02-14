@@ -51,7 +51,7 @@ describe "Sites" do
 		end
 		it 'includes the links for a json GET' do
 			@site.links.create!(:url => "linked-to.com", :http_response => 200 )
-			get "/sites/#{@site.id}.json"
+			get "/sites/#{@site.id}.json" 
 			response.should be_success
 			result = JSON.parse(response.body)
 			result["links"].should_not == nil
@@ -61,13 +61,22 @@ describe "Sites" do
 	end
 
 	describe "GET /sites/:id/edit" do
+		# before do
+		# 	@site = Site.create(:url => "www.google.com")
 		it 'is successful with HTML'
 		it 'is a 404 with JSON'
 	end
 
 	describe "GET /sites/new" do
-		it 'is successful with HTML'
-		it 'is a 404 with JSON'
+		it 'is successful with HTML' do
+			get "/sites/new" 
+			response.should be_success
+			# response.body.should include(@site.url)
+		end 
+		it 'is a 404 with JSON' do
+			get "/sites/new.json"
+			response.code.should == "404"
+		end
 	end
 
 	describe "GET /linkfarm/" do
