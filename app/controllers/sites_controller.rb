@@ -44,6 +44,11 @@ class SitesController < ApplicationController
   def edit
     @site = Site.find(params[:id])
 
+    respond_to do |f|
+      f.html { render :edit }
+      f.json { render :json => {:error => "Edit path for site not found. Try update."}, :status => :not_found }
+     end
+
     # respond_to do |f|
     #   f.html
       #f.json {render :json => @site.as_json(include: :)}
@@ -61,7 +66,7 @@ class SitesController < ApplicationController
           end
         end
 
-
+ 
 
 
   end

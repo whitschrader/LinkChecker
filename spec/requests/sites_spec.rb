@@ -61,11 +61,19 @@ describe "Sites" do
 	end
 
 	describe "GET /sites/:id/edit" do
-		# before do
-		# 	@site = Site.create(:url => "www.google.com")
-		it 'is successful with HTML'
-		it 'is a 404 with JSON'
+		before do
+			@site = Site.create(:url => "www.google.com")
+		end
+		it 'is successful with HTML' do
+			get "/sites/#{@site.id}/edit"
+		response.should be_success
 	end
+
+		it 'is a 404 with JSON' do
+			get "/sites/#{@site.id}/edit.json"
+			response.code.should == "404"
+	end
+end
 
 	describe "GET /sites/new" do
 		it 'is successful with HTML' do

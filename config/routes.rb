@@ -4,6 +4,7 @@ LinkChecker::Application.routes.draw do
   post '/sites', to: 'sites#create', as: 'sites'
   get '/sites/:id', to: 'sites#show', as: 'site'
   get '/linkfarm', to: 'sites#linkfarm'
+  get '/sites/:id/edit', to: 'sites#edit', as: 'edit_site'
 
   delete '/sites/:id', to: 'sites#destroy'
 end
